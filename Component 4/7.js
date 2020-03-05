@@ -122,10 +122,30 @@ function Graph()
 
 	// transitive closure package (requirements in line comments, to be removed and replaced by JSDOCs) 
 	
-	this.hasPath =  hasPathImpl;                    // boolean, true if path exists between vertices v_i, v_j in digraph
-	this.shortestPath = shortestPathImpl;           // return distance of shortest path between v_i, v_j in weighted graph 
-	this.dfsTC  = [];       			// return TC matrix for digraph based on a dfs
-	this.DfsTC = dfsTCImpl;				//Compute DFS-Based TC matrix
+	/**
+		Check if there is a path between two vertices in a digraph
+		@method
+	*/
+	this.hasPath =  hasPathImpl;                   
+
+	/**
+		Get the length of the shortest path between two vertices in a weighted graph
+		@method
+	*/
+	this.shortestPath = shortestPathImpl;      
+
+        /**
+		Transitive closure matrix , set after applying DfsTC.
+		Stores output of last DfsTC call.
+		@default [ ]
+	*/
+	this.dfsTC  = [];
+
+	/**
+		Compute DFS-Based TC matrix
+		@method
+	*/
+	this.DfsTC = dfsTCImpl;				
 		
 
 }
@@ -140,6 +160,14 @@ function Graph()
 
 // transitive closure package 
 
+/**
+	Check if there is a path between two vertices using their IDs
+	@author Arwa Fahad
+	@implements Graph#hasPath
+	@param {integer} u_i Source vertex id
+	@param {integer} v_i target vertex id
+	@returns {boolean} True if there is path between u_i v_i
+*/
 
 function hasPathImpl(u_i, v_i)
 {
@@ -147,11 +175,25 @@ function hasPathImpl(u_i, v_i)
 }
 //----------------------------------
 
+/**
+	Return the shortest path between two vertices using their IDs
+	@author Arwa Fahad
+	@implements Graph#shortestPath
+	@param {number} u_i Source vertex id
+	@param {number} v_i target vertex id
+	@returns {integer} The shortest path between u_i v_i
+*/
 function shortestPathImpl(u_i, v_i)
 {
 	return this.floydD[u_i][v_i];
 }
 //--------------------------------------------------------
+/**
+	Finds the shortest distance from one vertex to all the other vertices (with better efficiency)
+	@author Arwa Fahad
+	@implements Graph#dfsTC
+*/
+
 function dfsTCImpl()
 {
     // for each vertex
