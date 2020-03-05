@@ -141,15 +141,51 @@ function Graph()
 
 	// transitive closure package (requirements in line comments, to be removed and replaced by JSDOCs) 
 	
-	this.hasPath =  hasPathImpl;                    // boolean, true if path exists between vertices v_i, v_j in digraph
-	this.shortestPath = shortestPathImpl;           // return distance of shortest path between v_i, v_j in weighted graph 
-	this.isDAG = isDAGImpl;                    	// boolean, true if acyclic digraph
-	this.warshallFloyd = warshallFloydImpl;         // inserts .tc field in adjacency matrix if digraph, and .dist if weighted
-	this.dfsTC  = [];       			// return TC matrix for digraph based on a dfs
-	this.floydD = [];				// Distance matrix of shortest paths, set after applying warshallFloyd. Stores output of warshallFloyd call. 
-	this.warshallTC = [];				//Transitive closure matrix , set after applying warshallFloyd. Stores output of last warshallFloyd call.
-	this.DfsTC = dfsTCImpl;				//Compute DFS-Based TC matrix
-		
+	/**
+		Distance matrix of shortest paths, set after applying warshallFloyd.
+		Stores output of warshallFloyd call. 
+		@default [ ]
+	*/
+	this.floydD = [];
+	/**
+		Transitive closure matrix , set after applying warshallFloyd.
+		Stores output of last warshallFloyd call.
+		@default [ ]
+	*/
+	this.warshallTC = [];
+	/**
+		Transitive closure matrix , set after applying DfsTC.
+		Stores output of last DfsTC call.
+		@default [ ]
+	*/
+	this.dfsTC = [];
+
+	// student methods
+	/**
+		Check if there is a path between two vertices in a digraph
+		@method
+	*/
+	this.hasPath =  hasPathImpl;
+	/**
+		Get the length of the shortest path between two vertices in a weighted graph
+		@method
+	*/
+	this.shortestPath = shortestPathImpl;
+	/**
+		Test if the diagraph is DAG (Directed Acyclic Graph)
+		@method
+	*/
+	this.isDAG = isDAGImpl;
+	/**
+		Compute TC matrix if unweighed digraph, and distance matrix if weighted
+		@method
+	*/
+	this.warshallFloyd = warshallFloydImpl;
+	/**
+		Compute DFS-Based TC matrix
+		@method
+	*/
+	this.DfsTC = dfsTCImpl;	
 
 }
 
@@ -163,18 +199,41 @@ function Graph()
 
 // transitive closure package 
 
-
+/**
+	Check if there is a path between two vertices using their IDs
+	@author Arwa Fahad
+	@implements Graph#hasPath
+	@param {integer} u_i Source vertex id
+	@param {integer} v_i target vertex id
+	@returns {boolean} True if there is path between u_i v_i
+*/
 function hasPathImpl(u_i, v_i)
 {
 	return this.warshallTC[u_i][v_i] == 1? true : false;
 }
 //----------------------------------
+/**
+	Return the shortest path between two vertices using their IDs
+	@author Arwa Fahad
+	@implements Graph#shortestPath
+	@param {number} u_i Source vertex id
+	@param {number} v_i target vertex id
+	@returns {integer} The shortest path between u_i v_i
+*/
 
 function shortestPathImpl(u_i, v_i)
 {
 	return this.floydD[u_i][v_i];
 }
 //--------------------------------------------------------
+
+/**
+	Check if the given graph is Directed Acyclic Graph
+	@author Arwa Fahad
+	@implements Graph#isDAG
+	@returns {boolean} True if diagraph is DAG
+*/
+
 function isDAGImpl()
 {
 	for (var i = 0, j = 0; i < this.warshallTC.length && j < this.warshallTC.length; i++, j++)
@@ -183,6 +242,12 @@ function isDAGImpl()
 	return true;
 }
 //--------------------------------------------------------
+/**
+	Finds the shortest distance from one vertex to all the other vertices
+	@author Arwa Fahad
+	@implements Graph#warshallFloyd
+*/
+
 function warshallFloydImpl()
 {
     // implement the ADJACENCY matrix 
@@ -225,6 +290,12 @@ function warshallFloydImpl()
 }
 
 //-----------------------------------------------------------------------
+/**
+	Finds the shortest distance from one vertex to all the other vertices (with better efficiency)
+	@author Arwa Fahad
+	@implements Graph#dfsTC
+*/
+
 function dfsTCImpl()
 {
     // for each vertex
